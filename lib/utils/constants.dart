@@ -7,8 +7,8 @@ const weakerBaseColor = Color(0xFF4C4E50);
 const accentColor = Color(0xFF2A6952);
 
 const slider = 'Slider';
-const float = 'Float';
-const int = 'Int';
+const float = '℉';
+const int = '℃';
 
 const alert = 'Alert';
 const livingRoom = 'Living Room';

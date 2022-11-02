@@ -19,7 +19,9 @@ class StatusBloc extends Bloc<StatusEvent, StatusState> {
         );
         databaseOps.status.listen(
           (databaseEvent) {
-            databaseOps.readStatus(databaseEvent.snapshot)
+            databaseOps.readStatus(
+              databaseEvent.snapshot,
+            )
                 ? add(
                     const OnEvent(),
                   )

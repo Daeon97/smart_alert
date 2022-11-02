@@ -30,7 +30,9 @@ class App extends StatelessWidget {
 
   List<BlocProvider> get _providers => [
         BlocProvider<SliderBloc>(
-          create: (context) => SliderBloc(),
+          create: (context) => SliderBloc(
+            databaseOps: DatabaseOps(),
+          ),
         ),
         BlocProvider<StatusBloc>(
           create: (context) => StatusBloc(

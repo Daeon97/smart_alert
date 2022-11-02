@@ -26,10 +26,3 @@ class GotTestEvent extends TestEvent {
         test,
       ];
 }
-
-class ChangeSliderEvent extends TestEvent {
-  const ChangeSliderEvent();
-
-  @override
-  List<Object> get props => [];
-}

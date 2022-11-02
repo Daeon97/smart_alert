@@ -14,6 +14,9 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
+    BlocProvider.of<SliderBloc>(context).add(
+      const GetSliderEvent(),
+    );
     BlocProvider.of<StatusBloc>(context).add(
       const GetStatusEvent(),
     );
@@ -33,8 +36,8 @@ class _HomeScreenState extends State<HomeScreen> {
               backgroundColor: baseColor,
               body: SingleChildScrollView(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16.0,
+                  padding: const EdgeInsets.all(
+                    16.0,
                   ),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -119,14 +122,16 @@ class _HomeScreenState extends State<HomeScreen> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Text(
-                                  '${testState is GotTestState ? testState.test.sliderValue : nil}',
+                                  '${testState is GotTestState ? testState.test.sliderValue.toStringAsFixed(
+                                      2,
+                                    ) : nil}',
                                   style: TextStyle(
                                     color: statusState is OnState
                                         ? Colors.white
                                         : Colors.white.withOpacity(
                                             0.1,
                                           ),
-                                    fontSize: 70.0,
+                                    fontSize: 45.0,
                                   ),
                                 ),
                                 const SizedBox(
@@ -161,10 +166,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         height: 64.0,
                       ),
                       Slider(
-                        value: 50,
+                        value: sliderState is GotSliderState
+                            ? sliderState.sliderValue.toDouble()
+                            : nil.toDouble(),
                         min: 0,
                         max: 255,
-                        label: '5',
+                        // label:
+                        //     '${sliderState is GotSliderState ? sliderState.sliderValue.toDouble() : nil.toDouble()}',
                         activeColor: statusState is OnState
                             ? accentColor
                             : Colors.white.withOpacity(
@@ -173,9 +181,16 @@ class _HomeScreenState extends State<HomeScreen> {
                         inactiveColor: Colors.white.withOpacity(
                           0.1,
                         ),
-                        onChanged: (value) {
-                          print(value);
-                        },
+                        onChanged: testState is GotTestState &&
+                                statusState is! OffState
+                            ? (value) {
+                                sliderContext.read<SliderBloc>().add(
+                                      WriteSliderEvent(
+                                        sliderValue: value,
+                                      ),
+                                    );
+                              }
+                            : null,
                       ),
                       const SizedBox(
                         height: 32.0,
@@ -204,7 +219,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Icon(
-                                      FontAwesomeIcons.ghost,
+                                      FontAwesomeIcons.snowflake,
                                       color: statusState is OnState
                                           ? accentColor
                                           : accentColor.withOpacity(
@@ -217,7 +232,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                     Column(
                                       children: [
                                         Text(
-                                          '${testState is GotTestState ? testState.test.floatValue : nil}',
+                                          '${testState is GotTestState ? testState.test.floatValue.toStringAsFixed(
+                                              2,
+                                            ) : nil}',
                                           style: TextStyle(
                                             color: statusState is OnState
                                                 ? Colors.white
@@ -252,7 +269,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Icon(
-                                      FontAwesomeIcons.ship,
+                                      FontAwesomeIcons.sun,
                                       color: statusState is OnState
                                           ? accentColor
                                           : accentColor.withOpacity(
@@ -265,7 +282,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                     Column(
                                       children: [
                                         Text(
-                                          '${testState is GotTestState ? testState.test.intValue : nil}',
+                                          '${testState is GotTestState ? testState.test.intValue.toStringAsFixed(
+                                              2,
+                                            ) : nil}',
                                           style: TextStyle(
                                             color: statusState is OnState
                                                 ? Colors.white
@@ -335,6 +354,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                   0.1,
                                 ),
                         ),
+                      ),
+                      const SizedBox(
+                        height: 24.0,
                       ),
                     ],
                   ),
